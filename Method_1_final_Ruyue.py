@@ -11,10 +11,10 @@ import pandas as pd
 import numpy as np
 
 #def read_file(f):
-df = pd.read_csv('/Users/Ruyue/Documents/Smurfit Bussiness Analytics/Semester2/ARI_Programing2/bookings.csv',sep=',',header = None)
+df = pd.read_csv('bookings.csv',sep=',',header = None)
 name = df[0]
 num = df[1]  
-db = '/Users/Ruyue/Documents/Smurfit Bussiness Analytics/Semester2/ARI_Programing2/airline_seating.db' 
+db = 'data.db' 
 conn = sqlite3.connect(db)
 c = conn.cursor()
 nrows =c.execute("SELECT nrows from rows_cols").fetchone()[0]  #number of rows in the plane
