@@ -144,3 +144,15 @@ for i in range(len(num)):
 conn.commit()
 conn.close()
 
+conn = sqlite3.connect(db)
+c = conn.cursor()
+dff= c.execute("SELECT row, seat,name FROM seating ").fetchall() 
+dF = pd.DataFrame(dff)
+dF2 = dF[2]
+df1 = pd.DataFrame({'A': dF2[0:15], 'B': dF2[15:30], 'C': dF2[30:45], 'D': dF2[45:60]},  index=[0,1, 2, 3,4,5,6,7,8,9,10,11,12,13,14])
+b = [x for x in dF2[15:30]]
+df1['B']=b
+c = [x for x in dF2[30:45]]
+d = [x for x in dF2[45:60]]
+df1['C']=c
+df1['D']=d
