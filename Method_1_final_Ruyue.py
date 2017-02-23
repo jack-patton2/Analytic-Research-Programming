@@ -83,21 +83,11 @@ def booking_multi(i):
             for j in seats_avai:
                 while j[0] == row:
                     k = j[1]
-                    print('@',j)
                     if are_together(num[i],row,k):
                         for x in range(num[i]):
                             assign=[row,k+x]
                             update_booking(name[i],assign)
-                            print(k,assign,num[i],x,i)
                         return True
-
-
-  
-
- 
-    
-
-                                 
 
 def update_booking(name,seat_assign):
     """if seats have been assigned succefully, update seats_taken, seats_avai and Table seat"""
@@ -147,8 +137,7 @@ for i in range(len(num)):
             for j in assign:                
                 update_booking(name[i],j)
                 seats_left = seats_left_(seats_avai)
-                c.execute("""UPDATE metrics SET passengers_separated=? """, (passengers_separated,))
-            print('split ',i)  
+                c.execute("""UPDATE metrics SET passengers_separated=? """, (passengers_separated,))  
             
 
 # Committing changes and closing the connection to the database file
