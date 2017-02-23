@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv('/Users/jackpatton/Documents/School/bookings.csv',sep=',',header = None)
+df = pd.read_csv('bookings.csv',sep=',',header = None)
 name = df[0]
 num = df[1]  
-db = '/Users/jackpatton/Documents/School/airline_seating.db' 
+db = 'airline_seating.db' 
 conn = sqlite3.connect(db)
 c = conn.cursor()
 nrows =c.execute("SELECT nrows from rows_cols").fetchone()[0]  
