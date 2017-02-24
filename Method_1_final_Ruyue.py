@@ -92,8 +92,7 @@ def booking_multi(i):
 def update_booking(name,seat_assign):
     """if seats have been assigned succefully, update seats_taken, seats_avai and Table seat"""
     seats_taken.append([seat_assign[0],convert_numtoletter(seat_assign[1])])
-    seats_avai.remove(seat_assign)
-    
+    seats_avai.remove(seat_assign)    
     c.execute("""UPDATE seating SET name =?  WHERE row=? and seat=?""",(name,seat_assign[0],convert_numtoletter(seat_assign[1])))
 
 
@@ -126,19 +125,18 @@ for i in range(len(num)):
                 assign = sorted(seats_avai,key=lambda x: x[0])[0:num[i]]
                 passengers_separated = passengers_separated + num[i]
                 for j in assign:
-                    update_booking(name[i],j)
-                    seats_left = seats_left_(seats_avai)
+                    update_booking(name[i],j)             
                     c.execute("""UPDATE metrics SET passengers_separated=? """, (passengers_separated,)) 
-                print('split ',i)       
+                seats_left = seats_left_(seats_avai) 
+                
         # passengers have to be split
         else:
             assign = sorted(seats_avai,key=lambda x: x[0])[0:num[i]]
             passengers_separated = passengers_separated + num[i]
             for j in assign:                
                 update_booking(name[i],j)
-                seats_left = seats_left_(seats_avai)
                 c.execute("""UPDATE metrics SET passengers_separated=? """, (passengers_separated,))  
-            
+            seats_left = seats_left_(seats_avai)
 
 # Committing changes and closing the connection to the database file
 conn.commit()
