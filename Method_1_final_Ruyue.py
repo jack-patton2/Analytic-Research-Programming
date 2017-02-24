@@ -10,7 +10,7 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
-#def read_file(f):
+# read file and connect database
 df = pd.read_csv('bookings.csv',sep=',',header = None)
 name = df[0]
 num = df[1]  
@@ -25,9 +25,9 @@ passengers_refused = 0
 passengers_separated = 0
 seats_po = c.execute("SELECT row, seat from seating").fetchall() #get structure of seats
 
-
+#functions
 def convert_list(l):
-    'convert a list of tuples to a list of lists'
+    """convert list of tuples to list of lists"""
     l = [list(elem) for elem in l]
     return l
 
@@ -35,7 +35,7 @@ seats_po = convert_list(seats_po)
 seats_taken = convert_list(seats_taken)
 
 def convert_letter(list1,str2):
-    'convert letters in seats to interger'
+    """convert letters of seats to interger"""
     for i in range(len(list1)):
         for j in range(len(str2)):
             if list1[i][1] == str2[j]:
@@ -44,7 +44,7 @@ def convert_letter(list1,str2):
 
 seats_po = convert_letter(seats_po,seats[0])
 seats_taken = convert_letter(seats_taken,seats[0])
-
+# seats available for booking
 seats_avai=[x for x in seats_po if x not in seats_taken]
 
 def seats_left_(seats_avai):
@@ -59,25 +59,26 @@ def seats_left_(seats_avai):
 
 seats_left = seats_left_(seats_avai)
 
-
-seats = c.execute("SELECT seats from rows_cols").fetchone() 
 def convert_numtoletter(n):
+    """convert numbers to letters when updating database"""
     L = seats[0][n-1] #letter
     return L
 
 def booking_single(i):
+    """booking a seat when there is only one passenger"""
     assign = sorted(seats_avai,key=lambda x: x[0])[0]
     update_booking(name[i],assign)
 
                 
 def are_together(num,row,k):
-    """check if the seats in the available row are together,otherwise, count seats_split """
+    """check if the seats in the available row are together """
     for i in range(num):
         if [row,k+i] not in seats_avai:
             return False
     return True
 
 def booking_multi(i):
+    """booking function for multiple passengers; Assign the seats together as much as possible"""
     for row,n in seats_left:
         if num[i] <= n:
             for j in seats_avai:
@@ -129,7 +130,7 @@ for i in range(len(num)):
                     c.execute("""UPDATE metrics SET passengers_separated=? """, (passengers_separated,)) 
                 seats_left = seats_left_(seats_avai) 
                 
-        # passengers have to be split
+        # passengers number over the seats in a row, who have to be split
         else:
             assign = sorted(seats_avai,key=lambda x: x[0])[0:num[i]]
             passengers_separated = passengers_separated + num[i]
